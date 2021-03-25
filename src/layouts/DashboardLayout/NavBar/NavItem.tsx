@@ -2,10 +2,12 @@ import React from 'react';
 import { NavLink as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import {
-  Button,
   ListItem,
+  Button,
   makeStyles
 } from '@material-ui/core';
+
+import RoundButton from '../../../components/RoundButton';
 
 const useStyles = makeStyles((theme) => ({
   item: {
@@ -18,9 +20,9 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: theme.typography.fontWeightMedium,
     justifyContent: 'flex-start',
     letterSpacing: 0,
-    padding: '10px 8px',
-    textTransform: 'none',
-    width: '100%'
+    paddingTop: '8px',
+    paddingBottom: '8px',
+    width: '100%',
   },
   icon: {
     marginRight: theme.spacing(1)
@@ -61,7 +63,7 @@ const NavItem: React.FC<Props> = ({
       disableGutters
       {...rest}
     >
-      <Button
+      <RoundButton
         activeClassName={classes.active}
         className={classes.button}
         component={RouterLink}
@@ -76,7 +78,7 @@ const NavItem: React.FC<Props> = ({
         <span className={classes.title}>
           {title}
         </span>
-      </Button>
+      </RoundButton>
     </ListItem>
   );
 };
