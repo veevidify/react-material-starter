@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import { Doughnut } from 'react-chartjs-2';
 import {
   Box,
   Card,
@@ -102,7 +103,10 @@ const TrafficByDevice: React.FC<Props> = ({ className, ...rest }) => {
           height={300}
           position="relative"
         >
-          {'PlaceHolder'}
+          <Doughnut
+            data={data}
+            options={options}
+          />
         </Box>
         <Box
           display="flex"

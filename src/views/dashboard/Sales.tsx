@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import { Bar } from 'react-chartjs-2';
 import {
   Box,
   Button,
@@ -121,7 +122,10 @@ const Sales: React.FC<Props> = ({ className, ...rest }) => {
           height={400}
           position="relative"
         >
-          {'PlaceHolder'}
+          <Bar
+            data={data}
+            options={options}
+          />
         </Box>
       </CardContent>
       <Divider />
