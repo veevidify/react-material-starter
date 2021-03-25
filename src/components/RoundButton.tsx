@@ -5,7 +5,7 @@ import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles({
   root: {
-    borderRadius: 10,
+    borderRadius: 20,
   },
 });
 
