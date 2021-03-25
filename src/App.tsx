@@ -1,13 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import Dashboard from './views/Dashboard';
 import './App.css';
 
+import { useRoutes } from 'react-router-dom';
+import { ThemeProvider } from '@material-ui/core';
+import GlobalStyles from './components/GlobalStyles';
+import theme from './theme';
+import routes from './route';
+
 function App() {
+  const routing = useRoutes(routes);
+
   return (
-    <div className="App">
-      <Dashboard />
-    </div>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      {routing}
+    </ThemeProvider>
+
   );
 }
 
