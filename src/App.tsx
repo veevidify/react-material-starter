@@ -5,10 +5,11 @@ import { ThemeProvider } from '@material-ui/core';
 import StyledEngineProvider from '@material-ui/core/StyledEngineProvider';
 import GlobalStyles from './components/GlobalStyles';
 import theme from './theme';
-import routes from './route';
+
+import { authenticatedRoutes, guestRoutes } from './route';
 
 function App() {
-  const routing = useRoutes(routes);
+  const routing = useRoutes(authenticatedRoutes);
 
   return (
     <StyledEngineProvider injectFirst>
