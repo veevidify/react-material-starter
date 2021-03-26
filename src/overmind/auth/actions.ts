@@ -1,11 +1,10 @@
 import { Action, AsyncAction, rehydrate } from 'overmind';
 import { CookieAuth, User } from '.';
-import { initState } from './state';
 
 interface ILoginReq {
   username: string;
   password: string;
-  callback?: () => void;
+  callback: () => void;
 }
 export const login: AsyncAction<ILoginReq> = async (
   { effects, actions },
@@ -21,19 +20,21 @@ export const login: AsyncAction<ILoginReq> = async (
         break;
 
       case 'failed':
-        await actions.auth.deauth();
+        await actions.auth.deauth({});
         break;
     }
   } catch {
-    await actions.auth.deauth();
+    await actions.auth.deauth({});
   }
 };
 
-export const logout: AsyncAction = async ({ effects, actions }) => {
+export const logout: AsyncAction<{
+  callback: () => void;
+}> = async ({ effects, actions }, { callback = () => {} }) => {
   console.log('=> action logout');
   try {
     const logoutRequest = await effects.auth.api.logout();
-    if (logoutRequest === true) await actions.auth.deauth();
+    if (logoutRequest === true) await actions.auth.deauth({ callback });
   } catch {}
 };
 
@@ -43,7 +44,7 @@ export const authenticate: AsyncAction<{
   user: User;
   expiry: string;
   callback?: () => void;
-}> = async ({ actions }, { user, expiry, callback }) => {
+}> = async ({ actions }, { user, expiry, callback = () => {} }) => {
   console.log('=> action authenticate');
   const cookieAuth = {
     user: user,
@@ -54,9 +55,10 @@ export const authenticate: AsyncAction<{
   if (callback) callback();
 };
 
-export const deauth: AsyncAction = async ({ actions }) => {
+export const deauth: AsyncAction<{ callback?: () => void }> = async ({ actions }, { callback = () => {} }) => {
   await actions.auth.clearCookieAuth();
   actions.auth.clearAuthInState();
+  if (callback) callback();
 };
 
 export const refreshAuthStateWithCookie: AsyncAction<void, boolean> = async ({
@@ -76,7 +78,7 @@ export const refreshAuthStateWithCookie: AsyncAction<void, boolean> = async ({
     } else actions.auth.writeAuthToState({ user: cookieAuth.user });
   }
 
-  if (!setAuth) await actions.auth.deauth();
+  if (!setAuth) await actions.auth.deauth({});
   return setAuth;
 };
 
