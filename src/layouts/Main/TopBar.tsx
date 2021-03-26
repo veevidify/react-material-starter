@@ -38,8 +38,8 @@ const TopBar: React.FC<Props> = ({ className, ...rest }) => {
         </RouterLink>
         <Box flexGrow={1} />
         <Hidden mdDown>
-          {guest.map(({ href, Icon }) => (
-            <IconButton color="inherit" href={href}>
+          {guest.map(({ title, href, Icon }) => (
+            <IconButton key={title} color="inherit" href={href}>
               <Icon />
             </IconButton>
           ))}

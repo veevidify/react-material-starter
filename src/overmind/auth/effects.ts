@@ -6,12 +6,12 @@ interface ILoginResponse {
 }
 export const api = {
   login: async (username: string, password: string): Promise<ILoginResponse> => {
-    if (username === 'a' && password === '123456')
+    if (username === 'a@b.c' && password === '123456')
       return {
         payload: {
           login: 'success',
           user: {
-            username: 'a',
+            username: 'a@b.c',
             roles: ['user'],
           },
           expiry: '2022-01-01 00:00:00',
