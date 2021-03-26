@@ -3,10 +3,14 @@ import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import {
   AppBar,
+  Box,
+  Hidden,
+  IconButton,
   Toolbar,
   makeStyles
 } from '@material-ui/core';
 import Logo from '../../components/Logo';
+import { guest } from '../../route';
 
 const useStyles = makeStyles(({
   root: {},
@@ -32,6 +36,14 @@ const TopBar: React.FC<Props> = ({ className, ...rest }) => {
         <RouterLink to="/">
           <Logo />
         </RouterLink>
+        <Box flexGrow={1} />
+        <Hidden mdDown>
+          {guest.map(({ href, Icon }) => (
+            <IconButton color="inherit" href={href}>
+              <Icon />
+            </IconButton>
+          ))}
+        </Hidden>
       </Toolbar>
     </AppBar>
   );

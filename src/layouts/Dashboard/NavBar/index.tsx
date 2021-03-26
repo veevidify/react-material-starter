@@ -10,16 +10,7 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import {
-  AlertCircle as AlertCircleIcon,
-  BarChart as BarChartIcon,
-  Lock as LockIcon,
-  Settings as SettingsIcon,
-  ShoppingBag as ShoppingBagIcon,
-  User as UserIcon,
-  UserPlus as UserPlusIcon,
-  Users as UsersIcon
-} from 'react-feather';
+import { authed } from '../../../route';
 import NavItem from './NavItem';
 
 const user = {
@@ -27,49 +18,6 @@ const user = {
   jobTitle: 'Senior Developer',
   name: 'Katarina Smith'
 };
-
-const items = [
-  {
-    href: '/app/dashboard',
-    icon: BarChartIcon,
-    title: 'Dashboard'
-  },
-  {
-    href: '/app/customers',
-    icon: UsersIcon,
-    title: 'Customers'
-  },
-  {
-    href: '/app/products',
-    icon: ShoppingBagIcon,
-    title: 'Products'
-  },
-  {
-    href: '/app/account',
-    icon: UserIcon,
-    title: 'Account'
-  },
-  {
-    href: '/app/settings',
-    icon: SettingsIcon,
-    title: 'Settings'
-  },
-  {
-    href: '/login',
-    icon: LockIcon,
-    title: 'Login'
-  },
-  {
-    href: '/register',
-    icon: UserPlusIcon,
-    title: 'Register'
-  },
-  {
-    href: '/404',
-    icon: AlertCircleIcon,
-    title: 'Error'
-  }
-];
 
 const useStyles = makeStyles(() => ({
   mobileDrawer: {
@@ -138,12 +86,12 @@ const NavBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
       <Divider />
       <Box p={2}>
         <List>
-          {items.map((item) => (
+          {authed.map(({ href, title, Icon }) => (
             <NavItem
-              href={item.href}
-              key={item.title}
-              title={item.title}
-              icon={item.icon}
+              href={href}
+              key={title}
+              title={title}
+              icon={Icon}
             />
           ))}
         </List>

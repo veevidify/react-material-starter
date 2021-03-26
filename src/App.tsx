@@ -9,7 +9,7 @@ import theme from './theme';
 import { authenticatedRoutes, guestRoutes } from './route';
 
 function App() {
-  const routing = useRoutes(authenticatedRoutes);
+  const routing = useRoutes(guestRoutes);
 
   return (
     <StyledEngineProvider injectFirst>

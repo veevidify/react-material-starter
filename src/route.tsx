@@ -11,30 +11,62 @@ import ProductListView from './views/products';
 import RegisterView from './views/auth/RegisterView';
 import SettingsView from './views/settings';
 
-const routes = [
+import {
+  AlertCircle as AlertCircleIcon,
+  BarChart as BarChartIcon,
+  Lock as LockIcon,
+  Settings as SettingsIcon,
+  ShoppingBag as ShoppingBagIcon,
+  User as UserIcon,
+  UserPlus as UserPlusIcon,
+  Users as UsersIcon,
+  Icon as IconType,
+} from 'react-feather';
+
+interface RouteProps {
+  href: string;
+  path: string;
+  title: string;
+  Icon: IconType;
+  Component: React.FC;
+}
+
+export const authed: RouteProps[] = [
   {
-    path: 'app',
-    element: <Dashboard />,
-    children: [
-      { path: 'account', element: <AccountView /> },
-      { path: 'customers', element: <CustomerListView /> },
-      { path: 'dashboard', element: <DashboardView /> },
-      { path: 'products', element: <ProductListView /> },
-      { path: 'settings', element: <SettingsView /> },
-      { path: '*', element: <Navigate to="/404" /> }
-    ]
+    href: '/app/dashboard',
+    path: 'dashboard',
+    Icon: BarChartIcon,
+    title: 'Dashboard',
+    Component: DashboardView,
   },
   {
-    path: '/',
-    element: <Main />,
-    children: [
-      { path: 'login', element: <LoginView /> },
-      { path: 'register', element: <RegisterView /> },
-      { path: '404', element: <NotFoundView /> },
-      { path: '/', element: <Navigate to="/app/dashboard" /> },
-      { path: '*', element: <Navigate to="/404" /> }
-    ]
-  }
+    href: '/app/customers',
+    path: 'customers',
+    Icon: UsersIcon,
+    title: 'Customers',
+    Component: CustomerListView,
+  },
+  {
+    href: '/app/products',
+    path: 'products',
+    Icon: ShoppingBagIcon,
+    title: 'Products',
+    Component: ProductListView,
+  },
+  {
+    href: '/app/account',
+    path: 'account',
+    Icon: UserIcon,
+    title: 'Account',
+    Component: AccountView,
+  },
+  {
+    href: '/app/settings',
+    path: 'settings',
+    Icon: SettingsIcon,
+    title: 'Settings',
+    Component: SettingsView,
+  },
 ];
 
 export const authenticatedRoutes = [
@@ -42,13 +74,9 @@ export const authenticatedRoutes = [
     path: 'app',
     element: <Dashboard />,
     children: [
-      { path: 'account', element: <AccountView /> },
-      { path: 'customers', element: <CustomerListView /> },
-      { path: 'dashboard', element: <DashboardView /> },
-      { path: 'products', element: <ProductListView /> },
-      { path: 'settings', element: <SettingsView /> },
+      ...(authed.map(({ path, Component }) => ({ path, element: <Component /> }))),
       { path: '/', element: <Navigate to="/app/dashboard" /> },
-      { path: '*', element: <Navigate to="/404" /> }
+      { path: '*', element: <Navigate to="/404" /> },
     ]
   },
   {
@@ -62,13 +90,29 @@ export const authenticatedRoutes = [
   }
 ];
 
+export const guest: RouteProps[] = [
+  {
+    href: '/login',
+    Icon: LockIcon,
+    title: 'Login',
+    path: 'login',
+    Component: LoginView,
+  },
+  {
+    href: '/register',
+    Icon: UserPlusIcon,
+    title: 'Register',
+    path: 'register',
+    Component: RegisterView,
+  },
+];
+
 export const guestRoutes = [
   {
     path: '/',
     element: <Main />,
     children: [
-      { path: 'login', element: <LoginView /> },
-      { path: 'register', element: <RegisterView /> },
+      ...(guest.map(({ path, Component }) => ({ path, element: <Component /> }))),
       { path: '404', element: <NotFoundView /> },
       { path: '/', element: <Navigate to="/login" /> },
       { path: '*', element: <Navigate to="/404" /> }
