@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import {
   AppBar,
@@ -12,7 +12,8 @@ import {
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
-import InputIcon from '@material-ui/icons/Input';
+import LogoutIcon from '@material-ui/icons/KeyboardReturn';
+import { useActions } from '../../overmind';
 import Logo from '../../components/Logo';
 
 const useStyles = makeStyles(() => ({
@@ -36,6 +37,9 @@ const TopBar: React.FC<Props> = ({
   const classes = useStyles();
   const [notifications] = useState([]);
 
+  const navigate = useNavigate();
+  const { auth } = useActions();
+
   return (
     <AppBar
       className={clsx(classes.root, className)}
@@ -57,8 +61,17 @@ const TopBar: React.FC<Props> = ({
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <IconButton color="inherit">
-            <InputIcon />
+          <IconButton
+            color="inherit"
+            onClick={() => {
+              auth.logout({
+                callback: () => {
+                  navigate("/");
+                }
+              });
+            }}
+          >
+            <LogoutIcon />
           </IconButton>
         </Hidden>
         <Hidden lgUp>

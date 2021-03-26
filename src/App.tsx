@@ -5,10 +5,14 @@ import { ThemeProvider } from '@material-ui/core';
 import StyledEngineProvider from '@material-ui/core/StyledEngineProvider';
 import GlobalStyles from './components/GlobalStyles';
 import theme from './theme';
-import routes from './route';
+import { authenticatedRoutes, guestRoutes } from './route';
+import { useStore } from './overmind';
 
 function App() {
-  const routing = useRoutes(routes);
+  const { auth } = useStore();
+  const currentRoutes = auth.user ? authenticatedRoutes : guestRoutes;
+
+  const routing = useRoutes(currentRoutes);
 
   return (
     <StyledEngineProvider injectFirst>

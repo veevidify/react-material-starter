@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import { Formik } from 'formik';
+import { Formik, useFormik } from 'formik';
 import {
   Box,
   Button,
@@ -12,6 +12,9 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
+
+import { useActions, useStore } from '../../overmind';
+
 import FacebookIcon from '../../icons/Facebook';
 import GoogleIcon from '../../icons/Google';
 import Page from '../../components/Page';
@@ -29,6 +32,8 @@ const LoginView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
+  const { auth: authActions } = useActions();
+
   return (
     <Page
       className={classes.root}
@@ -43,15 +48,23 @@ const LoginView = () => {
         <Container maxWidth="sm">
           <Formik
             initialValues={{
-              email: 'demo@devias.io',
-              password: 'Password123'
+              email: 'a@b.c',
+              password: '123456'
             }}
             validationSchema={Yup.object().shape({
               email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
               password: Yup.string().max(255).required('Password is required')
             })}
-            onSubmit={() => {
-              navigate('/app/dashboard', { replace: true });
+            onSubmit={(values, actions) => {
+              console.log('== formik submit')
+              authActions.login({
+                username: values.email,
+                password: values.password,
+                callback: () => {
+                  console.log('=> login callback');
+                  navigate('/app/dashboard');
+                },
+              });
             }}
           >
             {({

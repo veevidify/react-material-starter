@@ -5,11 +5,21 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 
+import { createOvermind } from 'overmind';
+import { Provider } from 'overmind-react';
+import { config } from './overmind';
+
+const overmind = createOvermind(config, {
+  devtools: true, // defaults to 'localhost:3031'
+});
+
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <Provider value={overmind}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
