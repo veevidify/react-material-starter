@@ -5,6 +5,7 @@ import Main from './layouts/Main';
 import AccountView from './views/account';
 import CustomerListView from './views/customers';
 import DashboardView from './views/dashboard';
+import OrdersView from './views/orders';
 import LoginView from './views/auth/LoginView';
 import NotFoundView from './views/errors/NotFoundView';
 import ProductListView from './views/products';
@@ -12,7 +13,6 @@ import RegisterView from './views/auth/RegisterView';
 import SettingsView from './views/settings';
 
 import {
-  AlertCircle as AlertCircleIcon,
   BarChart as BarChartIcon,
   Lock as LockIcon,
   Settings as SettingsIcon,
@@ -21,6 +21,7 @@ import {
   UserPlus as UserPlusIcon,
   Users as UsersIcon,
   Icon as IconType,
+  List as ListIcon,
 } from 'react-feather';
 
 interface RouteProps {
@@ -38,6 +39,13 @@ export const authed: RouteProps[] = [
     Icon: BarChartIcon,
     title: 'Dashboard',
     Component: DashboardView,
+  },
+  {
+    href: '/app/orders',
+    path: 'orders',
+    Icon: ListIcon,
+    title: 'Orders',
+    Component: OrdersView,
   },
   {
     href: '/app/customers',
