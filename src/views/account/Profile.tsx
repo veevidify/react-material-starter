@@ -14,14 +14,7 @@ import {
   makeStyles
 } from '@material-ui/core';
 
-const user = {
-  avatar: '/static/images/avatars/avatar_6.png',
-  city: 'Los Angeles',
-  country: 'USA',
-  jobTitle: 'Senior Developer',
-  name: 'Katarina Smith',
-  timezone: 'GMT-7'
-};
+import { useStore } from '../../overmind';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -38,42 +31,41 @@ interface Props {
 const Profile: React.FC<Props> = ({ className, ...rest }) => {
   const classes = useStyles();
 
+  const { auth } = useStore();
+  const user = auth.user;
+
   return (
     <Card
       className={clsx(classes.root, className)}
       {...rest}
     >
       <CardContent>
-        <Box
-          alignItems="center"
-          display="flex"
-          flexDirection="column"
-        >
-          <Avatar
-            className={classes.avatar}
-            src={user.avatar}
-          />
-          <Typography
-            color="textPrimary"
-            gutterBottom
-            variant="h3"
+        {user && (
+          <Box
+            alignItems="center"
+            display="flex"
+            flexDirection="column"
           >
-            {user.name}
-          </Typography>
-          <Typography
-            color="textSecondary"
-            variant="body1"
-          >
-            {`${user.city} ${user.country}`}
-          </Typography>
-          <Typography
-            className={classes.root}
-            color="textSecondary"
-            variant="body1"
-          >
-            {format(new Date(), 'hh:mm', { timeZone: user.timezone })}
-          </Typography>
-        </Box>
+            <Avatar
+              className={classes.avatar}
+              src={user.avatar_url ?? ''}
+            />
+            <Typography
+              color="textPrimary"
+              gutterBottom
+              variant="h3"
+            >
+              {user.name}
+            </Typography>
+            <Typography
+              className={classes.root}
+              color="textSecondary"
+              variant="body1"
+            >
+              {format(new Date(), 'hh:mm', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })}
+            </Typography>
+          </Box>
+        )}
       </CardContent>
       <Divider />
       <CardActions>

@@ -23,7 +23,11 @@ export const api = {
         payload: {
           login: 'success',
           user: {
-            username: 'a@b.c',
+            id: 0,
+            login: 'a',
+            email: 'a@b.c',
+            name: 'A',
+            type: 'User',
           },
           token: 'tok3n',
           expiry: '2022-01-01 00:00:00',

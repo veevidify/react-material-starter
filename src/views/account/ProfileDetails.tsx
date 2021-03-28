@@ -13,20 +13,8 @@ import {
   makeStyles
 } from '@material-ui/core';
 
-const states = [
-  {
-    value: 'alabama',
-    label: 'Alabama'
-  },
-  {
-    value: 'new-york',
-    label: 'New York'
-  },
-  {
-    value: 'san-francisco',
-    label: 'San Francisco'
-  }
-];
+import { useStore } from '../../overmind';
+import { head, tail } from '../../utils/functions';
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -38,13 +26,15 @@ interface Props {
 
 const ProfileDetails: React.FC<Props> = ({ className, ...rest }) => {
   const classes = useStyles();
+
+  const { auth } = useStore();
+  const user = auth.user;
+
   const [values, setValues] = useState({
-    firstName: 'Katarina',
-    lastName: 'Smith',
-    email: 'demo@devias.io',
+    firstName: head(user?.name.split(' ') ?? []),
+    lastName: tail(user?.name.split(' ') ?? []),
+    email: user?.email ?? '',
     phone: '',
-    state: 'Alabama',
-    country: 'USA'
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -132,47 +122,6 @@ const ProfileDetails: React.FC<Props> = ({ className, ...rest }) => {
                 value={values.phone}
                 variant="outlined"
               />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Country"
-                name="country"
-                onChange={handleChange}
-                required
-                value={values.country}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Select State"
-                name="state"
-                onChange={handleChange}
-                required
-                select
-                SelectProps={{ native: true }}
-                value={values.state}
-                variant="outlined"
-              >
-                {states.map((option) => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
             </Grid>
           </Grid>
         </CardContent>

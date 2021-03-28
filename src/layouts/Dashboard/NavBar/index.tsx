@@ -10,14 +10,10 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import { authed } from '../../../route';
 import NavItem from './NavItem';
 
-const user = {
-  avatar: '/static/images/avatars/avatar_6.png',
-  jobTitle: 'Senior Developer',
-  name: 'Katarina Smith'
-};
+import { authed } from '../../../route';
+import { useStore } from '../../../overmind';
 
 const useStyles = makeStyles(() => ({
   mobileDrawer: {
@@ -32,6 +28,10 @@ const useStyles = makeStyles(() => ({
     cursor: 'pointer',
     width: 64,
     height: 64
+  },
+  spacedText: {
+    marginTop: 10,
+    marginBottom: 10,
   }
 }));
 
@@ -43,6 +43,9 @@ interface Props {
 const NavBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
+
+  const { auth } = useStore();
+  const user = auth.user;
 
   useEffect(() => {
     if (openMobile && onMobileClose) {
@@ -57,32 +60,35 @@ const NavBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
       display="flex"
       flexDirection="column"
     >
-      <Box
-        alignItems="center"
-        display="flex"
-        flexDirection="column"
-        p={2}
-      >
-        <Avatar
-          className={classes.avatar}
-          component={RouterLink}
-          src={user.avatar}
-          to="/app/account"
-        />
-        <Typography
-          className={classes.avatar}
-          color="textPrimary"
-          variant="h5"
+      {user && (
+        <Box
+          alignItems="center"
+          display="flex"
+          flexDirection="column"
+          p={2}
         >
-          {user.name}
-        </Typography>
-        <Typography
-          color="textSecondary"
-          variant="body2"
-        >
-          {user.jobTitle}
-        </Typography>
-      </Box>
+          <Avatar
+            className={classes.avatar}
+            component={RouterLink}
+            src={user.avatar_url ?? ''}
+            to="/app/account"
+          />
+          <Typography
+            className={classes.spacedText}
+            color="textPrimary"
+            variant="h5"
+          >
+            {user.name}
+          </Typography>
+          <Typography
+            color="textSecondary"
+            variant="body2"
+          >
+            {user.location ?? (user.login ?? '')}
+          </Typography>
+        </Box>
+      )}
+
       <Divider />
       <Box p={2}>
         <List>
