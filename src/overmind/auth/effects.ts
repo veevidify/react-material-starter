@@ -1,10 +1,21 @@
+import { formatISO, addDays } from 'date-fns';
+
 import { CookieAuth, User } from '.';
 import { clearCookieKey, readCookieKey, updateCookieKey } from '../../utils/cookie';
 import config from '../../config';
 
 interface ILoginResponse {
-  payload: { login: 'success'; user: User; expiry: string } | { login: 'failed'; error: any };
+  payload: {
+    login: 'success';
+    user: User;
+    token: string;
+    expiry: string
+  } | {
+    login: 'failed';
+    error: any
+  };
 }
+
 export const api = {
   login: async (username: string, password: string): Promise<ILoginResponse> => {
     if (username === 'a@b.c' && password === '123456')
@@ -13,9 +24,8 @@ export const api = {
           login: 'success',
           user: {
             username: 'a@b.c',
-            roles: ['user'],
-            token: 'tok3n',
           },
+          token: 'tok3n',
           expiry: '2022-01-01 00:00:00',
         },
       };
@@ -32,9 +42,26 @@ export const api = {
     return true;
   },
 
-  getTokenFromCode: async (code: string): Promise<User> =>
-    fetch(config.proxy_url, { method: 'POST', body: JSON.stringify({ code }) })
-      .then(res => res.json())
+  getTokenFromCode: async (code: string): Promise<ILoginResponse> =>
+    fetch(config.proxy_url, {
+      method: 'POST',
+      body: JSON.stringify({ code })
+    })
+    .then(res => res.json())
+    .then(res => ({
+      payload: {
+        login: 'success' as 'success',
+        user: res.user,
+        token: res.token,
+        expiry: formatISO(addDays(new Date(), 7))
+      }
+    }))
+    .catch(error => ({
+      payload: {
+        login: 'failed' as 'failed',
+        error: error,
+      },
+    })),
 };
 
 export const cookieAuth = {
@@ -44,6 +71,7 @@ export const cookieAuth = {
 
     return {
       user: cookieAuthParse.user,
+      token: cookieAuthParse.token,
       expiry: new Date(Date.parse(cookieAuthParse.expiry)),
     };
   },
