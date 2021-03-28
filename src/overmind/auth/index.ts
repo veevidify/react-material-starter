@@ -11,6 +11,7 @@ const config = {
 export type User = {
   username: string;
   roles: string[];
+  token: string;
 };
 
 export type CookieAuth = {

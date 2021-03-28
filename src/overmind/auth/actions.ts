@@ -1,5 +1,6 @@
 import { Action, AsyncAction, rehydrate } from 'overmind';
 import { CookieAuth, User } from '.';
+import { formatISO, addDays } from 'date-fns';
 
 interface ILoginReq {
   username: string;
@@ -38,6 +39,22 @@ export const logout: AsyncAction<{
   } catch {}
 };
 
+export const getToken: AsyncAction<{
+  code: string;
+  callback: () => void;
+}> = async({ effects, actions }, { code, callback = () => {} }) => {
+  console.log('=> action get token');
+  try {
+    const user = await effects.auth.api.getTokenFromCode(code);
+    // condition here
+    if (user) await actions.auth.authenticate({
+      user: user,
+      expiry: formatISO(addDays(new Date(), 7)),
+      callback
+    });
+  } catch {}
+};
+
 // === auth flow control === //
 
 export const authenticate: AsyncAction<{
@@ -52,13 +69,13 @@ export const authenticate: AsyncAction<{
   };
   await actions.auth.persistCookieAuth(cookieAuth);
   actions.auth.writeAuthToState({ user });
-  if (callback) callback();
+  callback();
 };
 
 export const deauth: AsyncAction<{ callback?: () => void }> = async ({ actions }, { callback = () => {} }) => {
   await actions.auth.clearCookieAuth();
   actions.auth.clearAuthInState();
-  if (callback) callback();
+  callback();
 };
 
 export const refreshAuthStateWithCookie: AsyncAction<void, boolean> = async ({
@@ -104,7 +121,7 @@ export const writeAuthToState: Action<{
 }> = ({ state }, { user }) => {
   console.log('=> action load auth to state');
   state.auth.user = user;
-  state.auth.token = 'tok3n';
+  state.auth.token = user.token;
 };
 
 // clear auth details from overmind state
