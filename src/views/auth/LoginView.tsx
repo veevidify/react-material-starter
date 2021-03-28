@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik, useFormik } from 'formik';
@@ -13,11 +13,11 @@ import {
   makeStyles
 } from '@material-ui/core';
 
-import { useActions, useStore } from '../../overmind';
-
-import FacebookIcon from '../../icons/Facebook';
-import GoogleIcon from '../../icons/Google';
+import GithubLogo from '../../icons/Github';
 import Page from '../../components/Page';
+
+import { useActions, useStore } from '../../overmind';
+import config from '../../config';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +33,24 @@ const LoginView = () => {
   const navigate = useNavigate();
 
   const { auth: authActions } = useActions();
+
+  // if redirected with code, get token from api
+  useEffect(() => {
+    const url = window.location.href;
+    const hasCode = url.includes('?code=');
+    if (hasCode) {
+      const urlReplace = url.split('?code=');
+      const code = urlReplace[1];
+
+      authActions.authenticateWithCode({
+        code,
+        callback: () => {
+          console.log('=> login callback');
+          navigate('/app/dashboard');
+        },
+      })
+    }
+  }, [authActions, navigate]);
 
   return (
     <Page
@@ -104,29 +122,14 @@ const LoginView = () => {
                     <Button
                       color="primary"
                       fullWidth
-                      startIcon={<FacebookIcon />}
-                      // onClick={handleSubmit}
+                      startIcon={<GithubLogo />}
+                      href={config.oauthUrl}
+                      // onClick={() => {}}
                       type="submit"
                       size="large"
                       variant="contained"
                     >
-                      Login with Facebook
-                    </Button>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                  >
-                    <Button
-                      fullWidth
-                      startIcon={<GoogleIcon />}
-                      // onClick={handleSubmit}
-                      type="submit"
-                      size="large"
-                      variant="contained"
-                    >
-                      Login with Google
+                      Login with Github
                     </Button>
                   </Grid>
                 </Grid>

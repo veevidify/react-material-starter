@@ -39,7 +39,7 @@ export const logout: AsyncAction<{
   } catch {}
 };
 
-export const getToken: AsyncAction<{
+export const authenticateWithCode: AsyncAction<{
   code: string;
   callback: () => void;
 }> = async({ effects, actions }, { code, callback = () => {} }) => {
