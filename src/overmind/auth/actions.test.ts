@@ -13,11 +13,15 @@ describe('Actions', () => {
         const overmindAuth = createOvermindMock(config);
 
         const user: User = {
-          username: 'test',
-          roles: ['test', 'test'],
+            id: 0,
+            login: 'a',
+            email: 'a@b.c',
+            name: 'A',
+            type: 'User',
         };
         overmindAuth.actions.auth.writeAuthToState({
           user: user,
+          token: 'tok3n',
         });
 
         expect(overmindAuth.state.auth).toHaveProperty('user');
@@ -49,8 +53,11 @@ describe('Actions', () => {
     describe('persistCookieAuth', () => {
       test('should invoke effects set cookieAuth', async () => {
         const user: User = {
-          username: 'test',
-          roles: ['test', 'test'],
+          id: 0,
+          login: 'a',
+          email: 'a@b.c',
+          name: 'A',
+          type: 'User',
         };
 
         const overmindAuth = createOvermindMock(config, {
@@ -64,6 +71,7 @@ describe('Actions', () => {
 
         await overmindAuth.actions.auth.persistCookieAuth({
           user: user,
+          token: 'tok3n',
           expiry: new Date(),
         });
       });
