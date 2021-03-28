@@ -16,7 +16,12 @@ export const login: AsyncAction<ILoginReq> = async (
     const { payload } = loginRequest;
     switch (payload.login) {
       case 'success':
-        await actions.auth.authenticate({ user: payload.user, expiry: payload.expiry, callback });
+        await actions.auth.authenticate({
+          user: payload.user,
+          token: payload.token,
+          expiry: payload.expiry,
+          callback,
+        });
         break;
 
       case 'failed':
@@ -38,27 +43,57 @@ export const logout: AsyncAction<{
   } catch {}
 };
 
+export const authenticateWithCode: AsyncAction<{
+  code: string;
+  callback: () => void;
+}> = async({ effects, actions }, { code, callback = () => {} }) => {
+  console.log('=> action get token');
+  try {
+    const authRequest = await effects.auth.api.getTokenFromCode(code);
+    const { payload } = authRequest;
+    // condition here
+    switch (payload.login) {
+      case 'success':
+        await actions.auth.authenticate({
+          user: payload.user,
+          token: payload.token,
+          expiry: payload.expiry,
+          callback
+        });
+        break;
+
+      case 'failed':
+        await actions.auth.deauth({});
+        break;
+    }
+  } catch {
+    await actions.auth.deauth({});
+  }
+};
+
 // === auth flow control === //
 
 export const authenticate: AsyncAction<{
   user: User;
   expiry: string;
+  token: string;
   callback?: () => void;
-}> = async ({ actions }, { user, expiry, callback = () => {} }) => {
+}> = async ({ actions }, { user, expiry, token, callback = () => {} }) => {
   console.log('=> action authenticate');
   const cookieAuth = {
     user: user,
+    token: token,
     expiry: new Date(Date.parse(expiry)),
   };
   await actions.auth.persistCookieAuth(cookieAuth);
-  actions.auth.writeAuthToState({ user });
-  if (callback) callback();
+  actions.auth.writeAuthToState({ user, token });
+  callback();
 };
 
 export const deauth: AsyncAction<{ callback?: () => void }> = async ({ actions }, { callback = () => {} }) => {
   await actions.auth.clearCookieAuth();
   actions.auth.clearAuthInState();
-  if (callback) callback();
+  callback();
 };
 
 export const refreshAuthStateWithCookie: AsyncAction<void, boolean> = async ({
@@ -75,7 +110,7 @@ export const refreshAuthStateWithCookie: AsyncAction<void, boolean> = async ({
     const expiry = cookieAuth.expiry;
     if (expiry <= new Date()) {
       setAuth = false;
-    } else actions.auth.writeAuthToState({ user: cookieAuth.user });
+    } else actions.auth.writeAuthToState({ user: cookieAuth.user, token: cookieAuth.token });
   }
 
   if (!setAuth) await actions.auth.deauth({});
@@ -101,10 +136,11 @@ export const clearCookieAuth: AsyncAction = async ({ effects }) => {
 // write auth details into overmind state
 export const writeAuthToState: Action<{
   user: User;
-}> = ({ state }, { user }) => {
+  token: string;
+}> = ({ state }, { user, token }) => {
   console.log('=> action load auth to state');
   state.auth.user = user;
-  state.auth.token = 'tok3n';
+  state.auth.token = token;
 };
 
 // clear auth details from overmind state

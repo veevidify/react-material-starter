@@ -9,12 +9,21 @@ const config = {
 };
 
 export type User = {
-  username: string;
-  roles: string[];
+  id:          number;
+  login:       string;
+  email:       string;
+  type:        string;
+  name:        string;
+  avatar_url?: string;
+  company?:    Nullable<string>;
+  html_url?:   string;
+  location?:   Nullable<string>;
+  repos_url?:  string;
 };
 
 export type CookieAuth = {
   user: User;
+  token: string;
   expiry: Date;
 };
 

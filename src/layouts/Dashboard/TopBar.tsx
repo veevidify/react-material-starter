@@ -47,6 +47,14 @@ const TopBar: React.FC<Props> = ({
       {...rest}
     >
       <Toolbar>
+        <Hidden lgUp>
+          <IconButton
+            color="inherit"
+            onClick={onMobileNavOpen}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Hidden>
         <RouterLink to="/">
           <Logo />
         </RouterLink>
@@ -72,14 +80,6 @@ const TopBar: React.FC<Props> = ({
             }}
           >
             <LogoutIcon />
-          </IconButton>
-        </Hidden>
-        <Hidden lgUp>
-          <IconButton
-            color="inherit"
-            onClick={onMobileNavOpen}
-          >
-            <MenuIcon />
           </IconButton>
         </Hidden>
       </Toolbar>
