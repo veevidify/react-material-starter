@@ -49,7 +49,7 @@ const Results: React.FC<Props> = ({ className, customers, ...rest }) => {
     setSelectedCustomerIds(newSelectedCustomerIds);
   };
 
-  const handleSelectOne = (event: object, id: string) => {
+  const handleSelectOne = (event: Record<string, any>, id: string) => {
     const selectedIndex = selectedCustomerIds.indexOf(id);
     let newSelectedCustomerIds: string[] = [];
 
