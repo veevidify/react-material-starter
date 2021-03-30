@@ -8,7 +8,7 @@ import {
   Hidden,
   List,
   Typography,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core';
 import NavItem from './NavItem';
 
@@ -17,22 +17,22 @@ import { useStore } from '../../../overmind';
 
 const useStyles = makeStyles(() => ({
   mobileDrawer: {
-    width: 256
+    width: 256,
   },
   desktopDrawer: {
     width: 256,
     top: 64,
-    height: 'calc(100% - 64px)'
+    height: 'calc(100% - 64px)',
   },
   avatar: {
     cursor: 'pointer',
     width: 64,
-    height: 64
+    height: 64,
   },
   spacedText: {
     marginTop: 10,
     marginBottom: 10,
-  }
+  },
 }));
 
 interface Props {
@@ -51,40 +51,23 @@ const NavBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
     if (openMobile && onMobileClose) {
       onMobileClose();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
   const content = (
-    <Box
-      height="100%"
-      display="flex"
-      flexDirection="column"
-    >
+    <Box height="100%" display="flex" flexDirection="column">
       {user && (
-        <Box
-          alignItems="center"
-          display="flex"
-          flexDirection="column"
-          p={2}
-        >
+        <Box alignItems="center" display="flex" flexDirection="column" p={2}>
           <Avatar
             className={classes.avatar}
             component={RouterLink}
             src={user.avatar_url ?? ''}
             to="/app/account"
           />
-          <Typography
-            className={classes.spacedText}
-            color="textPrimary"
-            variant="h5"
-          >
+          <Typography className={classes.spacedText} color="textPrimary" variant="h5">
             {user.name}
           </Typography>
-          <Typography
-            color="textSecondary"
-            variant="body2"
-          >
-            {user.location ?? (user.login ?? '')}
+          <Typography color="textSecondary" variant="body2">
+            {user.location ?? user.login ?? ''}
           </Typography>
         </Box>
       )}
@@ -93,12 +76,7 @@ const NavBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
       <Box p={2}>
         <List>
           {authed.map(({ href, title, Icon }) => (
-            <NavItem
-              href={href}
-              key={title}
-              title={title}
-              icon={Icon}
-            />
+            <NavItem href={href} key={title} title={title} icon={Icon} />
           ))}
         </List>
       </Box>
@@ -120,12 +98,7 @@ const NavBar: React.FC<Props> = ({ onMobileClose, openMobile }) => {
         </Drawer>
       </Hidden>
       <Hidden mdDown>
-        <Drawer
-          anchor="left"
-          classes={{ paper: classes.desktopDrawer }}
-          open
-          variant="persistent"
-        >
+        <Drawer anchor="left" classes={{ paper: classes.desktopDrawer }} open variant="persistent">
           {content}
         </Drawer>
       </Hidden>

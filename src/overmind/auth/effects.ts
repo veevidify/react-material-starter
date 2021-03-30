@@ -5,15 +5,17 @@ import { clearCookieKey, readCookieKey, updateCookieKey } from '../../utils/cook
 import config from '../../config';
 
 interface ILoginResponse {
-  payload: {
-    login: 'success';
-    user: User;
-    token: string;
-    expiry: string
-  } | {
-    login: 'failed';
-    error: any
-  };
+  payload:
+    | {
+        login: 'success';
+        user: User;
+        token: string;
+        expiry: string;
+      }
+    | {
+        login: 'failed';
+        error: any;
+      };
 }
 
 export const api = {
@@ -49,23 +51,23 @@ export const api = {
   getTokenFromCode: async (code: string): Promise<ILoginResponse> =>
     fetch(config.proxy_url, {
       method: 'POST',
-      body: JSON.stringify({ code })
+      body: JSON.stringify({ code }),
     })
-    .then(res => res.json())
-    .then(res => ({
-      payload: {
-        login: 'success' as 'success',
-        user: res.user,
-        token: res.token,
-        expiry: formatISO(addDays(new Date(), 7))
-      }
-    }))
-    .catch(error => ({
-      payload: {
-        login: 'failed' as 'failed',
-        error: error,
-      },
-    })),
+      .then((res) => res.json())
+      .then((res) => ({
+        payload: {
+          login: 'success' as const,
+          user: res.user,
+          token: res.token,
+          expiry: formatISO(addDays(new Date(), 7)),
+        },
+      }))
+      .catch((error) => ({
+        payload: {
+          login: 'failed' as const,
+          error: error,
+        },
+      })),
 };
 
 export const cookieAuth = {

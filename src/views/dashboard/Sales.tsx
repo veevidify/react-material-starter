@@ -11,13 +11,13 @@ import {
   Divider,
   useTheme,
   makeStyles,
-  colors
+  colors,
 } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
 const useStyles = makeStyles(() => ({
-  root: {}
+  root: {},
 }));
 
 interface Props {
@@ -33,15 +33,15 @@ const Sales: React.FC<Props> = ({ className, ...rest }) => {
       {
         backgroundColor: colors.indigo[500],
         data: [18, 5, 19, 27, 29, 19, 20],
-        label: 'This year'
+        label: 'This year',
       },
       {
         backgroundColor: colors.grey[200],
         data: [11, 20, 12, 29, 30, 25, 13],
-        label: 'Last year'
-      }
+        label: 'Last year',
+      },
     ],
-    labels: ['1 Aug', '2 Aug', '3 Aug', '4 Aug', '5 Aug', '6 Aug']
+    labels: ['1 Aug', '2 Aug', '3 Aug', '4 Aug', '5 Aug', '6 Aug'],
   };
 
   const options = {
@@ -59,20 +59,20 @@ const Sales: React.FC<Props> = ({ className, ...rest }) => {
           barPercentage: 0.5,
           categoryPercentage: 0.5,
           ticks: {
-            fontColor: theme.palette.text.secondary
+            fontColor: theme.palette.text.secondary,
           },
           gridLines: {
             display: false,
-            drawBorder: false
-          }
-        }
+            drawBorder: false,
+          },
+        },
       ],
       yAxes: [
         {
           ticks: {
             fontColor: theme.palette.text.secondary,
             beginAtZero: true,
-            min: 0
+            min: 0,
           },
           gridLines: {
             borderDash: [2],
@@ -81,10 +81,10 @@ const Sales: React.FC<Props> = ({ className, ...rest }) => {
             drawBorder: false,
             zeroLineBorderDash: [2],
             zeroLineBorderDashOffset: [2],
-            zeroLineColor: theme.palette.divider
-          }
-        }
-      ]
+            zeroLineColor: theme.palette.divider,
+          },
+        },
+      ],
     },
     tooltips: {
       backgroundColor: theme.palette.background.default,
@@ -95,51 +95,29 @@ const Sales: React.FC<Props> = ({ className, ...rest }) => {
       footerFontColor: theme.palette.text.secondary,
       intersect: false,
       mode: 'index',
-      titleFontColor: theme.palette.text.primary
-    }
+      titleFontColor: theme.palette.text.primary,
+    },
   };
 
   return (
-    <Card
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
+    <Card className={clsx(classes.root, className)} {...rest}>
       <CardHeader
-        action={(
-          <Button
-            endIcon={<ArrowDropDownIcon />}
-            size="small"
-            variant="text"
-          >
+        action={
+          <Button endIcon={<ArrowDropDownIcon />} size="small" variant="text">
             Last 7 days
           </Button>
-        )}
+        }
         title="Latest Sales"
       />
       <Divider />
       <CardContent>
-        <Box
-          height={400}
-          position="relative"
-        >
-          <Bar
-            data={data}
-            options={options}
-          />
+        <Box height={400} position="relative">
+          <Bar data={data} options={options} />
         </Box>
       </CardContent>
       <Divider />
-      <Box
-        display="flex"
-        justifyContent="flex-end"
-        p={2}
-      >
-        <Button
-          color="primary"
-          endIcon={<ArrowRightIcon />}
-          size="small"
-          variant="text"
-        >
+      <Box display="flex" justifyContent="flex-end" p={2}>
+        <Button color="primary" endIcon={<ArrowRightIcon />} size="small" variant="text">
           Overview
         </Button>
       </Box>
@@ -148,7 +126,7 @@ const Sales: React.FC<Props> = ({ className, ...rest }) => {
 };
 
 Sales.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default Sales;

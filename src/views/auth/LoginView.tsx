@@ -10,7 +10,7 @@ import {
   Link,
   TextField,
   Typography,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core';
 
 import GithubLogo from '../../icons/Github';
@@ -24,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.default,
     height: '100%',
     paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3)
-  }
+    paddingTop: theme.spacing(3),
+  },
 }));
 
 const LoginView = () => {
@@ -48,33 +48,28 @@ const LoginView = () => {
           console.log('=> login callback');
           navigate('/app/dashboard');
         },
-      })
+      });
     }
   }, [authActions, navigate]);
 
   return (
-    <Page
-      className={classes.root}
-      title="Login"
-    >
-      <Box
-        display="flex"
-        flexDirection="column"
-        height="100%"
-        justifyContent="center"
-      >
+    <Page className={classes.root} title="Login">
+      <Box display="flex" flexDirection="column" height="100%" justifyContent="center">
         <Container maxWidth="sm">
           <Formik
             initialValues={{
               email: 'a@b.c',
-              password: '123456'
+              password: '123456',
             }}
             validationSchema={Yup.object().shape({
-              email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-              password: Yup.string().max(255).required('Password is required')
+              email: Yup.string()
+                .email('Must be a valid email')
+                .max(255)
+                .required('Email is required'),
+              password: Yup.string().max(255).required('Password is required'),
             })}
             onSubmit={(values, actions) => {
-              console.log('== formik submit')
+              console.log('== formik submit');
               authActions.login({
                 username: values.email,
                 password: values.password,
@@ -92,33 +87,19 @@ const LoginView = () => {
               handleSubmit,
               isSubmitting,
               touched,
-              values
+              values,
             }) => (
               <form onSubmit={handleSubmit}>
                 <Box mb={3}>
-                  <Typography
-                    color="textPrimary"
-                    variant="h2"
-                  >
+                  <Typography color="textPrimary" variant="h2">
                     Sign in
                   </Typography>
-                  <Typography
-                    color="textSecondary"
-                    gutterBottom
-                    variant="body2"
-                  >
+                  <Typography color="textSecondary" gutterBottom variant="body2">
                     Sign in on the internal platform
                   </Typography>
                 </Box>
-                <Grid
-                  container
-                  spacing={3}
-                >
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                  >
+                <Grid container spacing={3}>
+                  <Grid item xs={12} md={6}>
                     <Button
                       color="primary"
                       fullWidth
@@ -133,15 +114,8 @@ const LoginView = () => {
                     </Button>
                   </Grid>
                 </Grid>
-                <Box
-                  mt={3}
-                  mb={1}
-                >
-                  <Typography
-                    align="center"
-                    color="textSecondary"
-                    variant="body1"
-                  >
+                <Box mt={3} mb={1}>
+                  <Typography align="center" color="textSecondary" variant="body1">
                     or login with email address
                   </Typography>
                 </Box>
@@ -183,17 +157,9 @@ const LoginView = () => {
                     Sign in now
                   </Button>
                 </Box>
-                <Typography
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  Don&apos;t have an account?
-                  {' '}
-                  <Link
-                    component={RouterLink}
-                    to="/register"
-                    variant="h6"
-                  >
+                <Typography color="textSecondary" variant="body1">
+                  Don&apos;t have an account?{' '}
+                  <Link component={RouterLink} to="/register" variant="h6">
                     Sign up
                   </Link>
                 </Typography>

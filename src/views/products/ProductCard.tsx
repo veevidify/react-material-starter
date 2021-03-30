@@ -9,7 +9,7 @@ import {
   Divider,
   Grid,
   Typography,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import GetAppIcon from '@material-ui/icons/GetApp';
@@ -17,15 +17,15 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   statsItem: {
     alignItems: 'center',
-    display: 'flex'
+    display: 'flex',
   },
   statsIcon: {
-    marginRight: theme.spacing(1)
-  }
+    marginRight: theme.spacing(1),
+  },
 }));
 
 interface Props {
@@ -37,78 +37,32 @@ const ProductCard: React.FC<Props> = ({ className, product, ...rest }) => {
   const classes = useStyles();
 
   return (
-    <Card
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
+    <Card className={clsx(classes.root, className)} {...rest}>
       <CardContent>
-        <Box
-          display="flex"
-          justifyContent="center"
-          mb={3}
-        >
-          <Avatar
-            alt="Product"
-            src={product.media}
-            variant="square"
-          />
+        <Box display="flex" justifyContent="center" mb={3}>
+          <Avatar alt="Product" src={product.media} variant="square" />
         </Box>
-        <Typography
-          align="center"
-          color="textPrimary"
-          gutterBottom
-          variant="h4"
-        >
+        <Typography align="center" color="textPrimary" gutterBottom variant="h4">
           {product.title}
         </Typography>
-        <Typography
-          align="center"
-          color="textPrimary"
-          variant="body1"
-        >
+        <Typography align="center" color="textPrimary" variant="body1">
           {product.description}
         </Typography>
       </CardContent>
       <Box flexGrow={1} />
       <Divider />
       <Box p={2}>
-        <Grid
-          container
-          justifyContent="space-between"
-          spacing={2}
-        >
-          <Grid
-            className={classes.statsItem}
-            item
-          >
-            <AccessTimeIcon
-              className={classes.statsIcon}
-              color="action"
-            />
-            <Typography
-              color="textSecondary"
-              display="inline"
-              variant="body2"
-            >
+        <Grid container justifyContent="space-between" spacing={2}>
+          <Grid className={classes.statsItem} item>
+            <AccessTimeIcon className={classes.statsIcon} color="action" />
+            <Typography color="textSecondary" display="inline" variant="body2">
               Updated 2hr ago
             </Typography>
           </Grid>
-          <Grid
-            className={classes.statsItem}
-            item
-          >
-            <GetAppIcon
-              className={classes.statsIcon}
-              color="action"
-            />
-            <Typography
-              color="textSecondary"
-              display="inline"
-              variant="body2"
-            >
-              {product.totalDownloads}
-              {' '}
-              Downloads
+          <Grid className={classes.statsItem} item>
+            <GetAppIcon className={classes.statsIcon} color="action" />
+            <Typography color="textSecondary" display="inline" variant="body2">
+              {product.totalDownloads} Downloads
             </Typography>
           </Grid>
         </Grid>
@@ -119,7 +73,7 @@ const ProductCard: React.FC<Props> = ({ className, product, ...rest }) => {
 
 ProductCard.propTypes = {
   className: PropTypes.string,
-  product: PropTypes.object.isRequired
+  product: PropTypes.object.isRequired,
 };
 
 export default ProductCard;

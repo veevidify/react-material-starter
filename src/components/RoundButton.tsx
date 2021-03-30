@@ -12,6 +12,6 @@ const useStyles = makeStyles({
 const RoundButton = ({ className, ...props }: any) => {
   const classes = useStyles();
   return <Button className={clsx(classes.root, className)} {...props} />;
-}
+};
 
 export default RoundButton;

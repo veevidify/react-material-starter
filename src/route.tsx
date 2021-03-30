@@ -82,10 +82,10 @@ export const authenticatedRoutes = [
     path: 'app',
     element: <Dashboard />,
     children: [
-      ...(authed.map(({ path, Component }) => ({ path, element: <Component /> }))),
+      ...authed.map(({ path, Component }) => ({ path, element: <Component /> })),
       { path: '/', element: <Navigate to="/app/dashboard" /> },
       { path: '*', element: <Navigate to="/404" /> },
-    ]
+    ],
   },
   {
     path: '/',
@@ -93,9 +93,9 @@ export const authenticatedRoutes = [
     children: [
       { path: '/', element: <Navigate to="/app/dashboard" /> },
       { path: '404', element: <NotFoundView /> },
-      { path: '*', element: <Navigate to="/404" /> }
-    ]
-  }
+      { path: '*', element: <Navigate to="/404" /> },
+    ],
+  },
 ];
 
 export const guest: RouteProps[] = [
@@ -120,10 +120,10 @@ export const guestRoutes = [
     path: '/',
     element: <Main />,
     children: [
-      ...(guest.map(({ path, Component }) => ({ path, element: <Component /> }))),
+      ...guest.map(({ path, Component }) => ({ path, element: <Component /> })),
       { path: '404', element: <NotFoundView /> },
       { path: '/', element: <Navigate to="/login" /> },
-      { path: '*', element: <Navigate to="/404" /> }
-    ]
-  }
+      { path: '*', element: <Navigate to="/404" /> },
+    ],
+  },
 ];

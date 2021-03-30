@@ -9,12 +9,12 @@ import {
   CardHeader,
   Divider,
   TextField,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core';
 
-const useStyles = makeStyles(({
-  root: {}
-}));
+const useStyles = makeStyles({
+  root: {},
+});
 
 interface Props {
   className?: string;
@@ -24,26 +24,20 @@ const Password: React.FC<Props> = ({ className, ...rest }) => {
   const classes = useStyles();
   const [values, setValues] = useState({
     password: '',
-    confirm: ''
+    confirm: '',
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValues({
       ...values,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
   return (
-    <form
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
+    <form className={clsx(classes.root, className)} {...rest}>
       <Card>
-        <CardHeader
-          subheader="Update password"
-          title="Password"
-        />
+        <CardHeader subheader="Update password" title="Password" />
         <Divider />
         <CardContent>
           <TextField
@@ -68,15 +62,8 @@ const Password: React.FC<Props> = ({ className, ...rest }) => {
           />
         </CardContent>
         <Divider />
-        <Box
-          display="flex"
-          justifyContent="flex-end"
-          p={2}
-        >
-          <Button
-            color="primary"
-            variant="contained"
-          >
+        <Box display="flex" justifyContent="flex-end" p={2}>
+          <Button color="primary" variant="contained">
             Update
           </Button>
         </Box>
@@ -86,7 +73,7 @@ const Password: React.FC<Props> = ({ className, ...rest }) => {
 };
 
 Password.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default Password;

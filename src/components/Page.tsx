@@ -7,16 +7,9 @@ interface Props {
   children: React.ReactElement;
 }
 
-const Page = forwardRef<HTMLDivElement, Props>(({
-  children,
-  title = '',
-  ...rest
-}, ref) => {
+const Page = forwardRef<HTMLDivElement, Props>(({ children, title = '', ...rest }, ref) => {
   return (
-    <div
-      ref={ref}
-      {...rest}
-    >
+    <div ref={ref} {...rest}>
       <Helmet>
         <title>{title}</title>
       </Helmet>

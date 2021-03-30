@@ -15,15 +15,15 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core';
 import { getInitials } from '../../utils/functions';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
   avatar: {
-    marginRight: theme.spacing(2)
-  }
+    marginRight: theme.spacing(2),
+  },
 }));
 
 interface Props {
@@ -73,15 +73,15 @@ const Results: React.FC<Props> = ({ className, customers, ...rest }) => {
     setLimit(parseInt(event.target.value, 10));
   };
 
-  const handlePageChange = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) => {
+  const handlePageChange = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,
+    newPage: number
+  ) => {
     setPage(newPage);
   };
 
   return (
-    <Card
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
+    <Card className={clsx(classes.root, className)} {...rest}>
       <PerfectScrollbar>
         <Box minWidth={1050}>
           <Table>
@@ -92,27 +92,17 @@ const Results: React.FC<Props> = ({ className, customers, ...rest }) => {
                     checked={selectedCustomerIds.length === customers.length}
                     color="primary"
                     indeterminate={
-                      selectedCustomerIds.length > 0
-                      && selectedCustomerIds.length < customers.length
+                      selectedCustomerIds.length > 0 &&
+                      selectedCustomerIds.length < customers.length
                     }
                     onChange={handleSelectAll}
                   />
                 </TableCell>
-                <TableCell>
-                  Name
-                </TableCell>
-                <TableCell>
-                  Email
-                </TableCell>
-                <TableCell>
-                  Location
-                </TableCell>
-                <TableCell>
-                  Phone
-                </TableCell>
-                <TableCell>
-                  Registration date
-                </TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Location</TableCell>
+                <TableCell>Phone</TableCell>
+                <TableCell>Registration date</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -130,36 +120,21 @@ const Results: React.FC<Props> = ({ className, customers, ...rest }) => {
                     />
                   </TableCell>
                   <TableCell>
-                    <Box
-                      alignItems="center"
-                      display="flex"
-                    >
-                      <Avatar
-                        className={classes.avatar}
-                        src={customer.avatarUrl}
-                      >
+                    <Box alignItems="center" display="flex">
+                      <Avatar className={classes.avatar} src={customer.avatarUrl}>
                         {getInitials(customer.name)}
                       </Avatar>
-                      <Typography
-                        color="textPrimary"
-                        variant="body1"
-                      >
+                      <Typography color="textPrimary" variant="body1">
                         {customer.name}
                       </Typography>
                     </Box>
                   </TableCell>
-                  <TableCell>
-                    {customer.email}
-                  </TableCell>
+                  <TableCell>{customer.email}</TableCell>
                   <TableCell>
                     {`${customer.address.city}, ${customer.address.state}, ${customer.address.country}`}
                   </TableCell>
-                  <TableCell>
-                    {customer.phone}
-                  </TableCell>
-                  <TableCell>
-                    {format(customer.createdAt, 'dd/mm/yyyy')}
-                  </TableCell>
+                  <TableCell>{customer.phone}</TableCell>
+                  <TableCell>{format(customer.createdAt, 'dd/mm/yyyy')}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -181,7 +156,7 @@ const Results: React.FC<Props> = ({ className, customers, ...rest }) => {
 
 Results.propTypes = {
   className: PropTypes.string,
-  customers: PropTypes.array.isRequired
+  customers: PropTypes.array.isRequired,
 };
 
 export default Results;

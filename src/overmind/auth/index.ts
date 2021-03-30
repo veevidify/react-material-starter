@@ -9,16 +9,16 @@ const config = {
 };
 
 export type User = {
-  id:          number;
-  login:       string;
-  email:       string;
-  type:        string;
-  name:        string;
+  id: number;
+  login: string;
+  email: string;
+  type: string;
+  name: string;
   avatar_url?: string;
-  company?:    Nullable<string>;
-  html_url?:   string;
-  location?:   Nullable<string>;
-  repos_url?:  string;
+  company?: Nullable<string>;
+  html_url?: string;
+  location?: Nullable<string>;
+  repos_url?: string;
 };
 
 export type CookieAuth = {

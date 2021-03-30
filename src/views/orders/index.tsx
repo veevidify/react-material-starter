@@ -105,10 +105,7 @@ const Dashboard = () => {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar
-        position="absolute"
-        className={clsx(classes.appBar, open && classes.appBarShift)}
-      >
+      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
         <Toolbar className={classes.toolbar}>
           <IconButton
             edge="start"
@@ -119,13 +116,7 @@ const Dashboard = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            component="h1"
-            variant="h6"
-            color="inherit"
-            noWrap
-            sx={{ flexGrow: 1 }}
-          >
+          <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
             Dashboard
           </Typography>
           <IconButton color="inherit">
@@ -156,9 +147,7 @@ const Dashboard = () => {
         component="main"
         sx={{
           backgroundColor: (theme) =>
-            theme.palette.mode === 'light'
-              ? theme.palette.grey[100]
-              : theme.palette.grey[900],
+            theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
           flexGrow: 1,
           height: '100vh',
           overflow: 'auto',
@@ -169,17 +158,13 @@ const Dashboard = () => {
           <Grid container spacing={3}>
             {/* Chart */}
             <Grid item xs={12} md={8} lg={9}>
-              <Paper
-                sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240 }}
-              >
+              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240 }}>
                 <Chart />
               </Paper>
             </Grid>
             {/* Recent Deposits */}
             <Grid item xs={12} md={4} lg={3}>
-              <Paper
-                sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240 }}
-              >
+              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240 }}>
                 <Deposits />
               </Paper>
             </Grid>
@@ -195,6 +180,6 @@ const Dashboard = () => {
       </Box>
     </Box>
   );
-}
+};
 
 export default Dashboard;

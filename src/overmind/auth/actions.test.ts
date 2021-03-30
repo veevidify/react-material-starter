@@ -13,11 +13,11 @@ describe('Actions', () => {
         const overmindAuth = createOvermindMock(config);
 
         const user: User = {
-            id: 0,
-            login: 'a',
-            email: 'a@b.c',
-            name: 'A',
-            type: 'User',
+          id: 0,
+          login: 'a',
+          email: 'a@b.c',
+          name: 'A',
+          type: 'User',
         };
         overmindAuth.actions.auth.writeAuthToState({
           user: user,

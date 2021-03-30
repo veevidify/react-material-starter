@@ -46,7 +46,7 @@ export const logout: AsyncAction<{
 export const authenticateWithCode: AsyncAction<{
   code: string;
   callback: () => void;
-}> = async({ effects, actions }, { code, callback = () => {} }) => {
+}> = async ({ effects, actions }, { code, callback = () => {} }) => {
   console.log('=> action get token');
   try {
     const authRequest = await effects.auth.api.getTokenFromCode(code);
@@ -58,7 +58,7 @@ export const authenticateWithCode: AsyncAction<{
           user: payload.user,
           token: payload.token,
           expiry: payload.expiry,
-          callback
+          callback,
         });
         break;
 
@@ -90,7 +90,10 @@ export const authenticate: AsyncAction<{
   callback();
 };
 
-export const deauth: AsyncAction<{ callback?: () => void }> = async ({ actions }, { callback = () => {} }) => {
+export const deauth: AsyncAction<{ callback?: () => void }> = async (
+  { actions },
+  { callback = () => {} }
+) => {
   await actions.auth.clearCookieAuth();
   actions.auth.clearAuthInState();
   callback();
