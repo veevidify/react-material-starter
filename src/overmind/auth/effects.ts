@@ -4,6 +4,8 @@ import { CookieAuth, IDP_TYPE, User } from '.';
 import { clearCookieKey, readCookieKey, updateCookieKey } from '../../utils/cookie';
 import config from '../../config';
 
+const COOKIE_AUTH_KEY = 'auth';
+
 interface ILoginResponse {
   payload:
     | {
@@ -75,7 +77,7 @@ export const api = {
 
 export const cookieAuth = {
   read: async (): Promise<Nullable<CookieAuth>> => {
-    const cookieAuthStr = readCookieKey('auth_github');
+    const cookieAuthStr = readCookieKey(COOKIE_AUTH_KEY);
     const cookieAuthParse = cookieAuthStr ? JSON.parse(cookieAuthStr) : null;
 
     return {
@@ -86,10 +88,10 @@ export const cookieAuth = {
   },
   set: async (cookieAuth: CookieAuth): Promise<void> => {
     console.log('=> effect write cookie');
-    updateCookieKey('auth_github', JSON.stringify(cookieAuth), cookieAuth.expiry);
+    updateCookieKey(COOKIE_AUTH_KEY, JSON.stringify(cookieAuth), cookieAuth.expiry);
   },
   clear: async (): Promise<void> => {
     console.log('=> effect clear cookie');
-    clearCookieKey('auth_github');
+    clearCookieKey(COOKIE_AUTH_KEY);
   },
 };
