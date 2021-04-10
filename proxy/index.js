@@ -29,10 +29,6 @@ const custom = {
   userUrl: 'http://10.0.0.1/auth/profile',
 };
 
-if (!clientId || !clientSecret || !redirectUri) {
-  throw new Error('Missing configurations');
-}
-
 // Forwarding Access-Control-Allow-Origin for token requests
 proxy.use((request, response, next) => {
   response.header('Access-Control-Allow-Origin', '*');
