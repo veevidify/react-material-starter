@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import { Formik, useFormik } from 'formik';
+import { Formik } from 'formik';
 import {
   Box,
   Button,
@@ -16,8 +16,11 @@ import {
 import GithubLogo from '../../icons/Github';
 import Page from '../../components/Page';
 
-import { useActions, useStore } from '../../overmind';
+import { useActions } from '../../overmind';
 import config from '../../config';
+
+import { User as UserIcon } from 'react-feather';
+import { IDP_TYPE } from '../../overmind/auth';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,7 +37,9 @@ const LoginView = () => {
 
   const { auth: authActions } = useActions();
 
-  // if redirected with code, get token from api
+  // if redirected with code
+  // determine if it comes from github or idp
+  // get token from api via proxy
   useEffect(() => {
     const url = window.location.href;
     const hasCode = url.includes('?code=');
@@ -42,7 +47,10 @@ const LoginView = () => {
       const urlReplace = url.split('?code=');
       const code = urlReplace[1];
 
+      const idp: IDP_TYPE = url.includes('/github') ? 'github' : 'custom';
+
       authActions.authenticateWithCode({
+        idp,
         code,
         callback: () => {
           console.log('=> login callback');
@@ -68,7 +76,7 @@ const LoginView = () => {
                 .required('Email is required'),
               password: Yup.string().max(255).required('Password is required'),
             })}
-            onSubmit={(values, actions) => {
+            onSubmit={(values, _actions) => {
               console.log('== formik submit');
               authActions.login({
                 username: values.email,
@@ -104,13 +112,25 @@ const LoginView = () => {
                       color="primary"
                       fullWidth
                       startIcon={<GithubLogo />}
-                      href={config.oauthUrl}
-                      // onClick={() => {}}
+                      href={config.githubOAuthUrl}
                       type="submit"
                       size="large"
                       variant="contained"
                     >
                       Login with Github
+                    </Button>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Button
+                      color="primary"
+                      fullWidth
+                      startIcon={<UserIcon />}
+                      href={config.customOAuthUrl}
+                      type="submit"
+                      size="large"
+                      variant="contained"
+                    >
+                      Login with Our IDP
                     </Button>
                   </Grid>
                 </Grid>

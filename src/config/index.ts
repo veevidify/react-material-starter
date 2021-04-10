@@ -1,17 +1,33 @@
 import { readEnv } from '../utils/functions';
 
-const client_id = readEnv('REACT_APP_CLIENT_ID');
-const client_secret = readEnv('REACT_APP_CLIENT_SECRET');
-const redirect_uri = readEnv('REACT_APP_REDIRECT_URI');
-const proxy_url = readEnv('REACT_APP_PROXY_URL');
-const oauthUrl = `https://github.com/login/oauth/authorize?scope=user&client_id=${client_id}&redirect_uri=${redirect_uri}&scope=user,email`;
+const githubClientId = readEnv('REACT_APP_GITHUB_CLIENT_ID');
+const githubClientSecret = readEnv('REACT_APP_GITHUB_CLIENT_SECRET');
+const githubRedirectUri = readEnv('REACT_APP_GITHUB_REDIRECT_URI');
+const githubProxyUrl = readEnv('REACT_APP_GITHUB_PROXY_URL');
+const githubOAuthUrl =
+  readEnv('REACT_APP_GITHUB_BASE_URL') +
+  `?scope=user&client_id=${githubClientId}&redirect_uri=${githubRedirectUri}&scope=user,email`;
+
+const customClientId = readEnv('REACT_APP_CUSTOM_CLIENT_ID');
+const customClientSecret = readEnv('REACT_APP_CUSTOM_CLIENT_SECRET');
+const customRedirectUri = readEnv('REACT_APP_CUSTOM_REDIRECT_URI');
+const customProxyUrl = readEnv('REACT_APP_CUSTOM_PROXY_URL');
+
+const customOAuthUrl =
+  readEnv('REACT_APP_CUSTOM_BASE_URL') +
+  `?scope=user&client_id=${githubClientId}&redirect_uri=${githubRedirectUri}&scope=user,email`;
 
 const config = {
-  client_id,
-  client_secret,
-  redirect_uri,
-  proxy_url,
-  oauthUrl,
+  githubClientId,
+  githubClientSecret,
+  githubRedirectUri,
+  githubProxyUrl,
+  githubOAuthUrl,
+  customClientId,
+  customClientSecret,
+  customRedirectUri,
+  customProxyUrl,
+  customOAuthUrl,
 };
 
 export default config;

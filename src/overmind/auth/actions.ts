@@ -1,5 +1,5 @@
-import { Action, AsyncAction, rehydrate } from 'overmind';
-import { CookieAuth, User } from '.';
+import { Action, AsyncAction } from 'overmind';
+import { CookieAuth, IDP_TYPE, User } from '.';
 
 interface ILoginReq {
   username: string;
@@ -44,12 +44,13 @@ export const logout: AsyncAction<{
 };
 
 export const authenticateWithCode: AsyncAction<{
+  idp: IDP_TYPE;
   code: string;
   callback: () => void;
-}> = async ({ effects, actions }, { code, callback = () => {} }) => {
+}> = async ({ effects, actions }, { idp, code, callback = () => {} }) => {
   console.log('=> action get token');
   try {
-    const authRequest = await effects.auth.api.getTokenFromCode(code);
+    const authRequest = await effects.auth.api.getTokenFromIdp(idp, code);
     const { payload } = authRequest;
     // condition here
     switch (payload.login) {
