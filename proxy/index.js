@@ -39,7 +39,13 @@ proxy.post('/authenticate/github', (request, response) => {
   const { code } = request.body;
   const form = new FormData();
 
-  const { clientId, clientSecret, redirectUri } = github;
+  const {
+    tokenUrl,
+    userUrl,
+    clientId,
+    clientSecret,
+    redirectUri,
+  } = github;
 
   form.append('client_id', clientId);
   form.append('client_secret', clientSecret);
@@ -78,7 +84,12 @@ proxy.post('/authenticate/custom', (request, response) => {
   const { code } = request.body;
   const form = new FormData();
 
-  const { clientId, clientSecret, redirectUri } = custom;
+  const { tokenUrl,
+    userUrl,
+    clientId,
+    clientSecret,
+    redirectUri,
+  } = custom;
 
   form.append('client_id', clientId);
   form.append('client_secret', clientSecret);

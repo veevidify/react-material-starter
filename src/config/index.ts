@@ -15,7 +15,7 @@ const customProxyUrl = readEnv('REACT_APP_CUSTOM_PROXY_URL');
 
 const customOAuthUrl =
   readEnv('REACT_APP_CUSTOM_BASE_URL') +
-  `oauth/authorize?scope=*&client_id=${customClientId}&redirect_uri=${customRedirectUri}&grant_type=authorization_code&response_type=code`;
+  `oauth/authorize?scope=*&client_id=${customClientId}&grant_type=authorization_code&response_type=code&redirect_uri=${customRedirectUri}`;
 
 const config = {
   githubClientId,

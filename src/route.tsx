@@ -23,6 +23,7 @@ import {
   Icon as IconType,
   List as ListIcon,
 } from 'react-feather';
+import { PartialRouteObject } from 'react-router';
 
 interface RouteProps {
   href: string;
@@ -30,6 +31,7 @@ interface RouteProps {
   title: string;
   Icon: IconType;
   Component: React.FC;
+  exact?: boolean;
 }
 
 export const authed: RouteProps[] = [
@@ -104,6 +106,7 @@ export const guest: RouteProps[] = [
     Icon: LockIcon,
     title: 'Login',
     path: 'login',
+    exact: false,
     Component: LoginView,
   },
   {
@@ -115,7 +118,7 @@ export const guest: RouteProps[] = [
   },
 ];
 
-export const guestRoutes = [
+export const guestRoutes: PartialRouteObject[] = [
   {
     path: '/',
     element: <Main />,

@@ -42,12 +42,12 @@ const LoginView = () => {
   // get token from api via proxy
   useEffect(() => {
     const url = window.location.href;
-    const hasCode = url.includes('?code=');
+    const hasCode = url.includes('&code=');
     if (hasCode) {
-      const urlReplace = url.split('?code=');
+      const urlReplace = url.split('&code=');
       const code = urlReplace[1];
 
-      const idp: IDP_TYPE = url.includes('/github') ? 'github' : 'custom';
+      const idp: IDP_TYPE = url.includes('idp=github') ? 'github' : 'custom';
 
       authActions.authenticateWithCode({
         idp,
