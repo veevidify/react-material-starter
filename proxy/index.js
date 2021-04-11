@@ -17,16 +17,16 @@ const github = {
   clientId: process.env.REACT_APP_GITHUB_CLIENT_ID || null,
   clientSecret: process.env.REACT_APP_GITHUB_CLIENT_SECRET || null,
   redirectUri: process.env.REACT_APP_GITHUB_REDIRECT_URI || null,
-  tokenUrl: process.env.REACT_APP_GITHUB_BASE_URL + '/login/oauth/access_token',
-  userUrl: 'https://api.github.com/user',
+  tokenUrl: process.env.REACT_APP_GITHUB_BASE_URL + 'login/oauth/access_token',
+  userUrl: process.env.REACT_APP_GITHUB_USER_URL,
 };
 
 const custom = {
   clientId: process.env.REACT_APP_CUSTOM_CLIENT_ID || null,
   clientSecret: process.env.REACT_APP_CUSTOM_CLIENT_SECRET || null,
   redirectUri: process.env.REACT_APP_CUSTOM_REDIRECT_URI || null,
-  tokenUrl: process.env.REACT_APP_CUSTOM_BASE_URL + '/oauth/token',
-  userUrl: 'http://10.0.0.1/auth/profile',
+  tokenUrl: process.env.REACT_APP_CUSTOM_BASE_URL + 'oauth/token',
+  userUrl: process.env.REACT_APP_CUSTOM_USER_URL,
 };
 
 // Forwarding Access-Control-Allow-Origin for token requests
@@ -82,9 +82,10 @@ proxy.post('/authenticate/github', (request, response) => {
 
 proxy.post('/authenticate/custom', (request, response) => {
   const { code } = request.body;
-  const form = new FormData();
+  const form = new URLSearchParams();
 
-  const { tokenUrl,
+  const {
+    tokenUrl,
     userUrl,
     clientId,
     clientSecret,
@@ -94,21 +95,26 @@ proxy.post('/authenticate/custom', (request, response) => {
   form.append('client_id', clientId);
   form.append('client_secret', clientSecret);
   form.append('redirect_uri', redirectUri);
-  form.append('requsst', redirectUri);
   form.append('code', code);
+  form.append('grant_type', 'authorization_code');
   form.append('response_type', 'token');
 
   nodeFetch(tokenUrl, {
     method: 'POST',
-    body: form,
+    headers: {
+      'Authorization': 'Basic ' + Buffer.from(clientId + ":" + clientSecret).toString('base64'),
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: form.toString(),
   })
-    .then((res) => res.text())
+    .then((res) => res.json())
     .then((paramString) => {
       let params = new URLSearchParams(paramString);
+      console.log({ paramString });
       const accessToken = params.get('access_token');
 
       return nodeFetch(userUrl, {
-        headers: { Authorization: `token ${accessToken}` },
+        headers: { Authorization: `Bearer ${accessToken}` },
       })
         .then((res) => res.json())
         .then((res) => {
