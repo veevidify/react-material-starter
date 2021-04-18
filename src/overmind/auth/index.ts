@@ -8,6 +8,8 @@ const config = {
   effects,
 };
 
+export type IDP_TYPE = 'github' | 'custom';
+
 export type User = {
   id: number;
   login: string;

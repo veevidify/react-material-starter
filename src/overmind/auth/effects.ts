@@ -1,8 +1,10 @@
 import { formatISO, addDays } from 'date-fns';
 
-import { CookieAuth, User } from '.';
+import { CookieAuth, IDP_TYPE, User } from '.';
 import { clearCookieKey, readCookieKey, updateCookieKey } from '../../utils/cookie';
 import config from '../../config';
+
+const COOKIE_AUTH_KEY = 'auth';
 
 interface ILoginResponse {
   payload:
@@ -48,8 +50,10 @@ export const api = {
     return true;
   },
 
-  getTokenFromCode: async (code: string): Promise<ILoginResponse> =>
-    fetch(config.proxy_url, {
+  getTokenFromIdp: async (idp: IDP_TYPE, code: string): Promise<ILoginResponse> => {
+    const url = idp === 'github' ? config.githubProxyUrl : config.customProxyUrl;
+
+    return fetch(url, {
       method: 'POST',
       body: JSON.stringify({ code }),
     })
@@ -67,12 +71,13 @@ export const api = {
           login: 'failed' as const,
           error: error,
         },
-      })),
+      }));
+  },
 };
 
 export const cookieAuth = {
   read: async (): Promise<Nullable<CookieAuth>> => {
-    const cookieAuthStr = readCookieKey('auth');
+    const cookieAuthStr = readCookieKey(COOKIE_AUTH_KEY);
     const cookieAuthParse = cookieAuthStr ? JSON.parse(cookieAuthStr) : null;
 
     return {
@@ -83,10 +88,10 @@ export const cookieAuth = {
   },
   set: async (cookieAuth: CookieAuth): Promise<void> => {
     console.log('=> effect write cookie');
-    updateCookieKey('auth', JSON.stringify(cookieAuth), cookieAuth.expiry);
+    updateCookieKey(COOKIE_AUTH_KEY, JSON.stringify(cookieAuth), cookieAuth.expiry);
   },
   clear: async (): Promise<void> => {
     console.log('=> effect clear cookie');
-    clearCookieKey('auth');
+    clearCookieKey(COOKIE_AUTH_KEY);
   },
 };
